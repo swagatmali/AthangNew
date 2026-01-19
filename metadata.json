@@ -1,0 +1,7 @@
+{
+  "name": "Swarnam - Indian Jewelry Virtual Try-on",
+  "description": "A luxury visualization tool that uses Gemini 2.5 Flash Image (Nano Banana) to generate realistic images of Indian models wearing uploaded jewelry in traditional, casual, and festive scenarios.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
