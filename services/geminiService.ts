@@ -2,7 +2,13 @@ import { GoogleGenAI, Type, GenerateContentResponse } from "@google/genai";
 import { Scenario, JewelryAnalysis, ShotType } from "../types";
 
 const getAIClient = () => {
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    console.error("API_KEY is missing. Please set it in your environment variables.");
+    // Return a dummy client or throw to prevent immediate crash, let the call fail gracefully
+    throw new Error("API Key is not configured");
+  }
+  return new GoogleGenAI({ apiKey });
 };
 
 export const analyzeJewelry = async (base64Image: string): Promise<JewelryAnalysis> => {
