@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type, GenerateContentResponse } from "@google/genai";
 import { Scenario, JewelryAnalysis, ShotType } from "../types";
 
@@ -8,9 +7,14 @@ const getAIClient = () => {
 
 export const analyzeJewelry = async (base64Image: string): Promise<JewelryAnalysis> => {
   const ai = getAIClient();
+  
+  // Extract MIME type from base64 string if present, default to png
+  const mimeMatch = base64Image.match(/^data:(.*?);base64,/);
+  const mimeType = mimeMatch ? mimeMatch[1] : 'image/png';
+  
   const imagePart = {
     inlineData: {
-      mimeType: 'image/png',
+      mimeType: mimeType,
       data: base64Image.split(',')[1] || base64Image,
     },
   };
@@ -49,6 +53,10 @@ export const generateVisualization = async (
 ): Promise<string> => {
   const ai = getAIClient();
   
+  // Extract MIME type from base64 string if present, default to png
+  const mimeMatch = jewelryBase64.match(/^data:(.*?);base64,/);
+  const mimeType = mimeMatch ? mimeMatch[1] : 'image/png';
+  
   const scenarioContexts = {
     [Scenario.TRADITIONAL]: `A graceful Indian model in heritage attire (like a Kanjeevaram Saree or Anarkali). Setting: A royal palace courtyard in Rajasthan.`,
     [Scenario.CASUAL]: `A modern Indian woman in contemporary Indo-western fusion (like a chic linen tunic). Setting: An upscale modern art gallery.`,
@@ -79,7 +87,7 @@ export const generateVisualization = async (
       parts: [
         {
           inlineData: {
-            mimeType: 'image/png',
+            mimeType: mimeType,
             data: jewelryBase64.split(',')[1] || jewelryBase64,
           }
         },
